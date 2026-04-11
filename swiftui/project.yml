@@ -1,0 +1,29 @@
+name: ChannelExampleApp
+options:
+  bundleIdPrefix: com.bluebillywig
+  deploymentTarget:
+    iOS: "16.0"
+
+packages:
+  BBChannelSwiftUI:
+    path: ../BBChannelSwiftUI
+  BBNativePlayerKit:
+    path: ../bbnativeplayerkit-swift
+
+targets:
+  ChannelExampleApp:
+    type: application
+    platform: iOS
+    sources:
+      - ChannelExampleApp
+    dependencies:
+      - package: BBChannelSwiftUI
+      - package: BBNativePlayerKit
+        product: BBNativePlayerKit-SwiftUI
+    info:
+      path: ChannelExampleApp/Info.plist
+      properties:
+        UILaunchScreen: {}
+    settings:
+      base:
+        SWIFT_VERSION: "5.9"

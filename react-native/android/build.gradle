@@ -1,0 +1,48 @@
+buildscript {
+    ext {
+        buildToolsVersion = "36.0.0"
+        minSdkVersion = 24
+        compileSdkVersion = 36
+        targetSdkVersion = 36
+        ndkVersion = "27.1.12297006"
+        kotlinVersion = "2.3.10"
+    }
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        classpath("com.android.tools.build:gradle")
+        classpath("com.facebook.react:react-native-gradle-plugin")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
+    }
+}
+
+// Make the vendored native SDK AARs from react-native-bb-player available to all modules.
+// This is additive to existing repositories (google(), mavenCentral()) from settings.gradle.
+allprojects {
+    repositories {
+        mavenLocal() // Dev artifacts from CI (extracted to ~/.m2/repository)
+        def bbPlayerRepo = rootProject.file("../node_modules/@bluebillywig/react-native-bb-player/android/repo")
+        if (bbPlayerRepo.exists()) {
+            maven { url bbPlayerRepo.toURI() }
+        }
+        maven { url "https://maven.bluebillywig.com/releases" }
+    }
+}
+
+// Force Kotlin stdlib version across all modules to match the compiler.
+// The native player SDK (bbnativeplayersdk-kotlin) is built with Kotlin 2.3.x
+// which pulls in kotlin-stdlib 2.3.x. Without this, RN's default 2.1.x compiler
+// cannot read 2.3.x metadata.
+subprojects {
+    configurations.all {
+        resolutionStrategy.eachDependency { details ->
+            if (details.requested.group == 'org.jetbrains.kotlin') {
+                details.useVersion(rootProject.ext.kotlinVersion)
+            }
+        }
+    }
+}
+
+apply plugin: "com.facebook.react.rootproject"

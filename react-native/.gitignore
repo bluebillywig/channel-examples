@@ -1,0 +1,44 @@
+# OSX
+.DS_Store
+
+# Xcode
+ios/build/
+ios/Pods/
+ios/.xcode.env.local
+*.xcuserstate
+*.xcuserdatad
+
+# Android
+android/.gradle/
+android/build/
+android/app/build/
+android/app/.cxx/
+android/local.properties
+
+# Node
+node_modules/
+
+# Metro
+.metro-health-check*
+
+# Bundler
+*.jsbundle
+
+# CocoaPods
+ios/Podfile.lock
+
+# Build artifacts
+*.tgz
+*.ipa
+*.apk
+*.aab
+
+# Temporary files
+*.log
+.cache/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo

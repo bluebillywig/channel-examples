@@ -1,0 +1,46 @@
+# Resolve react_native_pods.rb with node to allow for hoisting
+require Pod::Executable.execute_command('node', ['-p',
+  'require.resolve(
+    "react-native/scripts/react_native_pods.rb",
+    {paths: [process.argv[1]]},
+  )', __dir__]).strip
+
+# Remove bb-player vendored xcframeworks BEFORE podspec evaluation.
+# This makes bb-player fall through to pod dependencies (its podspec has an else branch).
+# All native frameworks then resolve from LocalPods — no conflicts, no stale remote pods.
+require 'fileutils'
+bb_player_fw = File.join(__dir__, '..', 'node_modules', '@bluebillywig', 'react-native-bb-player', 'ios', 'Frameworks')
+Dir.glob(File.join(bb_player_fw, '*.xcframework')).each { |fw| FileUtils.rm_rf(fw) }
+
+platform :ios, min_ios_version_supported
+prepare_react_native_project!
+
+linkage = ENV['USE_FRAMEWORKS']
+if linkage != nil
+  Pod::UI.puts "Configuring Pod with #{linkage}ally linked Frameworks".green
+  use_frameworks! :linkage => linkage.to_sym
+end
+
+target 'ChannelNativeExample' do
+  config = use_native_modules!
+
+  # LocalPods provides fresh builds of both SDKs.
+  # bb-player uses pod dependencies (vendored frameworks removed above).
+  pod 'BlueBillywigNativePlayerKit-iOS', :path => 'LocalPods/BBNativePlayerKit', :subspecs => ['GoogleCastSDK']
+  pod 'BlueBillywigNativeShared-iOS', :path => 'LocalPods/BBNativeShared'
+
+  use_react_native!(
+    :path => config[:reactNativePath],
+    # An absolute path to your application root.
+    :app_path => "#{Pod::Config.instance.installation_root}/.."
+  )
+
+  post_install do |installer|
+    react_native_post_install(
+      installer,
+      config[:reactNativePath],
+      :mac_catalyst_enabled => false,
+      # :ccache_enabled => true
+    )
+  end
+end

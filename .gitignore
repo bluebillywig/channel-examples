@@ -1,0 +1,28 @@
+# React Native
+react-native/node_modules/
+react-native/android/build/
+react-native/android/app/build/
+react-native/android/app/.cxx/
+react-native/android/.gradle/
+react-native/android/local.properties
+react-native/ios/build/
+react-native/ios/Pods/
+react-native/dist/
+*.tgz
+package-lock.json
+
+# SwiftUI
+swiftui/.build/
+swiftui/DerivedData/
+*.xcuserdata
+
+# Compose
+compose/build/
+compose/.gradle/
+compose/local.properties
+compose/app/build/
+
+# General
+.DS_Store
+*.log
+react-native/android/app/debug.keystore

@@ -1,0 +1,43 @@
+{
+  "name": "ChannelNativeExample",
+  "version": "1.0.0",
+  "description": "Example app for Blue Billywig Channel SDK",
+  "main": "index.js",
+  "scripts": {
+    "start": "react-native start",
+    "android": "react-native run-android",
+    "ios": "react-native run-ios",
+    "build:android": "cd android && env JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk-17.0.2.jdk/Contents/Home ./gradlew assembleDebug",
+    "build:android-release": "cd android && env JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk-17.0.2.jdk/Contents/Home ./gradlew assembleRelease",
+    "install:android": "adb install -r android/app/build/outputs/apk/debug/app-debug.apk"
+  },
+  "dependencies": {
+    "@bluebillywig/react-native-bb-player": "*",
+    "@bluebillywig/react-native-channel": "*",
+    "@react-native-async-storage/async-storage": "^2.1.2",
+    "@react-native-community/slider": "^5.1.2",
+    "react": "^19.2.3",
+    "react-native": "^0.84.1",
+    "react-native-orientation-locker": "^1.7.0",
+    "react-native-safe-area-context": "^5.4.0",
+    "react-native-svg": "^15.15.0",
+    "react-native-webview": "^13.12.5"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.28.3",
+    "@babel/preset-env": "^7.28.2",
+    "@babel/runtime": "^7.28.2",
+    "@react-native-community/cli": "^20.1.0",
+    "@react-native-community/cli-platform-android": "^20.1.0",
+    "@react-native-community/cli-platform-ios": "^20.1.0",
+    "@react-native/babel-preset": "^0.84.1",
+    "@react-native/metro-config": "^0.84.1",
+    "@react-native/typescript-config": "^0.84.1",
+    "@types/react": "~19.2.0",
+    "typescript": "~5.3.0"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "private": true
+}

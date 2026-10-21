@@ -6,8 +6,10 @@ require Pod::Executable.execute_command('node', ['-p',
   )', __dir__]).strip
 
 # Remove bb-player vendored xcframeworks BEFORE podspec evaluation.
-# This makes bb-player fall through to pod dependencies (its podspec has an else branch).
-# All native frameworks then resolve from LocalPods — no conflicts, no stale remote pods.
+# BB_PLAYER_LOCAL_PODS=1 makes bb-player's podspec depend on the kit pods instead
+# (without it the podspec refuses missing frameworks). All native frameworks then
+# resolve from LocalPods — no conflicts, no stale remote pods.
+ENV['BB_PLAYER_LOCAL_PODS'] = '1'
 require 'fileutils'
 bb_player_fw = File.join(__dir__, '..', 'node_modules', '@bluebillywig', 'react-native-bb-player', 'ios', 'Frameworks')
 Dir.glob(File.join(bb_player_fw, '*.xcframework')).each { |fw| FileUtils.rm_rf(fw) }

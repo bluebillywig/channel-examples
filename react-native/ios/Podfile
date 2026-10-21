@@ -28,7 +28,9 @@ target 'ChannelNativeExample' do
 
   # LocalPods provides fresh builds of both SDKs.
   # bb-player uses pod dependencies (vendored frameworks removed above).
-  pod 'BlueBillywigNativePlayerKit-iOS', :path => 'LocalPods/BBNativePlayerKit', :subspecs => ['GoogleCastSDK']
+  # Same Cast subspec bb-player's podspec requests (BB_PLAYER_CAST=nobluetooth).
+  cast_subspec = (ENV['BB_PLAYER_CAST'] || '').downcase == 'nobluetooth' ? 'GoogleCastSDKNoBluetooth' : 'GoogleCastSDK'
+  pod 'BlueBillywigNativePlayerKit-iOS', :path => 'LocalPods/BBNativePlayerKit', :subspecs => [cast_subspec]
   pod 'BlueBillywigNativeShared-iOS', :path => 'LocalPods/BBNativeShared'
 
   use_react_native!(
